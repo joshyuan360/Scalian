@@ -1,3 +1,35 @@
-h1 {
-    color: blue;
+#title {
+	margin-top: 50px;
+	color: white;
+}
+
+#subtitle {
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 18px;
+}
+
+#search-bar {
+	margin-top: 100px;
+	background-color: rgba(0, 0, 255, 0.3);
+
+	border-radius: 20px;
+	padding-top: 30px;
+	padding-bottom: 50px;
+}
+
+#engine-label {
+	color: white;
+	font-size: 18px;
+}
+
+#search-explanation {
+	margin-top: 20px;
+	color: white;
+	font-family: serif;
+}
+
+body {
+  	background-image: url("../img/dark-abstract.jpg");
+  	background-position: 50% 50%;
+  	background-repeat: repeat;
 }
