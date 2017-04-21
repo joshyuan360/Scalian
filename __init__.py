@@ -22,3 +22,6 @@ def send():
         return render_template('result.html', inputString=inputString, textMatch="none")
     
     return render_template('index.html')
+
+if __name__ == '__main__'
+    app.run()
