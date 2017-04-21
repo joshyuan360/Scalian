@@ -9,7 +9,7 @@ def index():
 def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
-        f = open('text.sb')
+        f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
         line = f.readline()
         
         while line:
