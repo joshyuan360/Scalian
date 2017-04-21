@@ -9,23 +9,31 @@ def index():
 def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
+
         #local server
-        #f = open('text.sb')
+        f = open('text.sb')
+        #deployment server: law.joshuayuan.com
+        #f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
         
-        #deployment
-        f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
+        matches = []
+        proximity = 0
+
         line = f.readline()
-        
         while line:
-            if inputString in line:
-                textMatch = "..." + line + "..."
-                return render_template('result.html', inputString=inputString, textMatch=textMatch)
+            proximity = 0
+            for word in inputString.split():
+                if len(word) > 3 and (word.lower() in line.lower()):
+                    proximity += 1
+                    if proximity == 3:
+                        line = "..." + line + "..."
+                        matches.append(line)
+                        break
+
             line = f.readline()
         
-
-        return render_template('result.html', inputString=inputString, textMatch="none")
-    
-    return render_template('index.html')
+        return render_template('result.html', inputString=inputString, matches=matches)
+    else:
+        return render_template('index.html')
 
 if __name__ == '__main__':
     app.run()

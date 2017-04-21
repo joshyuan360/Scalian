@@ -1,4 +1,11 @@
 <!DOCtype html>
 <h2>Your input: {{ inputString }}</h2>
 <h3>The Constitution of the United States of America states: </h3>
-<div id="quotation">{{ textMatch }}</div>
+
+<ul class=entries>
+  {% for match in matches %}
+    <li><h2 id="quotation">{{ match }}</h2>
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+</ul>
