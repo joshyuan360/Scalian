@@ -11,9 +11,9 @@ def send():
         inputString = request.form['user-input']
 
         #local server
-        f = open('text.sb')
+        #f = open('text.sb')
         #deployment server: law.joshuayuan.com
-        #f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
+        f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
         
         matches = []
         proximity = 0
