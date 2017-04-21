@@ -9,11 +9,16 @@ def index():
 def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
-        if "abortion" in inputString:
-        	constitution = "no"
-        else:
-        	constitution = "yes"
+        f = open('text.sb')
+        line = f.readline()
+        
+        while line:
+            if inputString in line:
+                textMatch = "..." + line + "..."
+                return render_template('result.html', inputString=inputString, textMatch=textMatch)
+            line = f.readline()
+        
 
-        return render_template('result.html', verdict=constitution)
+        return render_template('result.html', inputString=inputString, textMatch="none")
     
-    return "LOL"
+    return render_template('index.html')
