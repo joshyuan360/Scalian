@@ -1,11 +1,41 @@
 <!DOCtype html>
-<h2>Your input: {{ inputString }}</h2>
-<h3>The Constitution of the United States of America states: </h3>
 
-<ul class=entries>
-  {% for match in matches %}
-    <li><h2 id="quotation">{{ match }}</h2>
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
-</ul>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+  
+    <title>Scalia</title>
+    <meta name="description" content="constitutional interpretation engine">
+    <meta name="author" content="Joshua Yuan">
+    
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/result.css') }}">
+</head>
+
+<body>
+<div class="container matches-container">
+	<div class="row">
+		<h4>Your input: {{ inputString }}</h4>
+		<h3>The Constitution of the United States of America states: </h3>
+
+		<ul class=entries>
+	  	{% for match in matches %}
+	    	<li><p id="quotation" style="color:grey">{{ match }}</p></li>
+	  	{% else %}
+	    	<li><em>Unbelievable.  No entries here so far</em></li>
+	  	{% endfor %}
+		</ul>
+	</div>
+</div>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+          crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+            crossorigin="anonymous"></script> 
+    <script src="js/script.js"></script>
+</body>
+</html>

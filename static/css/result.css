@@ -1,0 +1,9 @@
+.matches-container {
+	background-color: black !important;
+}
+
+body {
+  	background-image: url("../img/dark-abstract.jpg");
+  	background-position: 50% 50%;
+  	background-repeat: repeat;
+}

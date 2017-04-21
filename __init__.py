@@ -24,7 +24,7 @@ def send():
             for word in inputString.split():
                 if len(word) > 3 and (word.lower() in line.lower()):
                     proximity += 1
-                    if proximity == 3:
+                    if proximity == 2:
                         line = "..." + line + "..."
                         matches.append(line)
                         break
