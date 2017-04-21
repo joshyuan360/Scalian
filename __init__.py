@@ -9,6 +9,10 @@ def index():
 def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
+        #local server
+        #f = open('text.sb')
+        
+        #deployment
         f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
         line = f.readline()
         
