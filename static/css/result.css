@@ -1,5 +1,31 @@
+ul {
+    font-size: 16px;
+    color: rgba(225, 225, 225, 0.8);
+}
+
 .matches-container {
-	background-color: black !important;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50px;
+    color: white;
+}
+
+.matches-row {
+    padding: 40px;
+}
+
+#scalia-bot {
+    font-size: 32px;
+}
+
+#your-input {
+    font-size: 24px;
+}
+
+.results-header {
+    margin-top: 50px;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    font-family: Arial;
 }
 
 body {

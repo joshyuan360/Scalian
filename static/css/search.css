@@ -1,10 +1,21 @@
-#results-container {
-	color: white !important;
-	background-color: black !important;
+.submit-button {
+  float: right;
+    -webkit-border-radius: 100;
+  -moz-border-radius: 100;
+  border-radius: 100px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #00c73f;
+  padding: 10px;
+  text-decoration: none;
+  border: none;
+  outline: none;
 }
 
-#quotation {
-	color: red;
+.submit-buttom:hover {
+  background: #20a100;
+  text-decoration: none;
 }
 
 #title {
@@ -17,13 +28,16 @@
 	font-size: 18px;
 }
 
+input {
+    padding: 20px;
+}
+
 #search-bar {
 	margin-top: 100px;
 	background-color: rgba(0, 0, 255, 0.3);
 
 	border-radius: 20px;
-	padding-top: 30px;
-	padding-bottom: 50px;
+	padding: 30px;
 }
 
 #engine-label {

@@ -13,19 +13,18 @@
 
 <body>
     <h1 class="text-center" id="title">Scalia Bot</h1>
-    <h2 class="text-center" id="subtitle">interpretation of legal texts using artificial intelligence</h2>
 
     <div class="container">
         <div class="text-center" id="engine-label">
-            <p>constitutional interpretation engine</p>
+           <div id="subtitle">constitutional interpretation engine</div>
         </div>
         <div class="row" id="search-bar">    
-            <div class="col-xs-8 col-xs-offset-2">
-            <form method="POST" action="/result">
+            <div class="col-md-12">
+                <form method="POST" action="/result">
                 <div class="form-group">
                     <input type="text" class="form-control" name="user-input">
                 </div>
-                <input class="btn btn-primary" type="submit" value="submit">
+                <input class="submit-button" type="submit" value="Enter" placeholder="find an article, search for cases, or ask a question">
             </form>
             </div>
         </div>
