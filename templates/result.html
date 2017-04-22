@@ -22,13 +22,14 @@
 </div>
 <div class="container matches-container">
 	<div class="row matches-row">
-		<h3>The Constitution of the United States of America states: </h3>
+		<h3>Criminal Code of Canade: </h3>
 
 		<ul class=entries>
 	  	{% for match in matches %}
-	    	<li><p id="quotation">{{ match }}</p></li>
+	    	<li><p id="quotation">{{ match }}</p>
+            </li>
 	  	{% else %}
-	    	<li><em>Unbelievable.  No entries here so far</em></li>
+	    	<li><em>No results found!</em></li>
 	  	{% endfor %}
 		</ul>
 	</div>

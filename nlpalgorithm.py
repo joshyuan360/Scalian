@@ -12,8 +12,8 @@ from nltk.stem import PorterStemmer, WordNetLemmatizer
 #filtered_input_text = []
 #lemmatized_legal_text = []
 #lemmatized_input_text = []
-DEPLOY = '/var/www/ScaliaBot/ScaliaBot/'
-#DEPLOY = ''
+DEPLOY = '/var/www/ScaliaBot/ScaliaBot/data/'
+DEPLOY = 'data/'
 # begin removal of all stop words
 def remove_stop_words(input_string):
     stop_words = set(stopwords.words("english"))
@@ -147,10 +147,10 @@ def get_relevant_sections(input_text):
         #print lem_sentence
 
         counter = 0
-   
+
         for word in lem_input_text:
             if word in sentence:
-                counter += 1 
+                counter += sentence.count(word)
 
         if counter != 0:
             potential_matches[index] = counter
