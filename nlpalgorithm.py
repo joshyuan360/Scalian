@@ -1,10 +1,8 @@
 import nltk
-
-from nltk.tokenize import sent_tokenize, word_tokenize, PunktSentenceTokenizer
-from nltk.corpus import stopwords, state_union, wordnet
+import io
+from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer, WordNetLemmatizer
-
-
 
 #for testing only
 #legal_text = "the government forces all citizens to plant trees every year"
@@ -72,14 +70,63 @@ def numerical_similarity():
 
     return score
 
+def sentence_file():
+    with io.open('law.sb', 'rU', encoding='utf-8') as myfile:
+        file_text = myfile.read()
+
+    file_text_sentences = sent_tokenize(file_text)
+    text_file = open("sentence_law.sb", "w")
+    
+    index = 0
+    removeLeftSpace = [')', ',', '.', ';', ':']
+    removeRightSpace = ['(']
+    for sentence in file_text_sentences:
+        words = word_tokenize(sentence)
+        new_string = ' '.join(words) + '\n'
+
+        for char in removeLeftSpace:
+            new_string = new_string.replace(' ' + char, char)
+        for char in removeRightSpace:
+            new_string = new_string.replace(char + ' ', char)
+
+        #new_string = new_string.replace('( ', '(').replace(' )', ')').replace(' ,', ',').replace(' .', '.').replace(' ;', ';')
+
+        text_file.write(new_string.encode('utf-8') + '\n')
+        
+        index += 1
+
+
+    text_file.close()
+
+sentence_file()
+
+def lem_file():
+    with io.open('law.sb', 'rU', encoding='utf-8') as myfile:
+        file_text = myfile.read()
+
+    file_text_sentences = sent_tokenize(file_text)
+    text_file = open("lem_law.sb", "w")
+    
+    index = 0
+    for sentence in file_text_sentences:
+        filtered_sentence = remove_stop_words(sentence)
+        lem_sentence = lemmatize_words(filtered_sentence)
+        new_string = ' '.join(lem_sentence) + '\n'
+        if index < 3:
+            print new_string
+        text_file.write(new_string.encode('utf-8') + '\n')    
+        index += 1
+    text_file.close()
+
 potential_matches = {}
 #part of speech tagging - NLP with Python
 def get_relevant_sections(input_text):
     # !!! CHANGE FILE PATH FOR DEPLOYMENT !!!
-    with open('/var/www/ScaliaBot/ScaliaBot/text.sb', 'r') as myfile:
-        legal_text = myfile.read().replace('\n', ' ').replace(';', '.')
-    legal_text_sentences = sent_tokenize(legal_text)
-    
+    with io.open('lem_law.sb', 'rU', encoding='utf-8') as myfile:
+        legal_text = myfile.read()
+    #legal_text = legal_text.replace(';', '.')
+    legal_text_sentences = legal_text.splitlines()
+    #print legal_text_sentences 
     #temporary
     #legal_text_sentences = ["apples grow on trees.", " oranges exist on Mars"]
     #input_text = "Voters must be able to vote in any primary election"
@@ -90,36 +137,36 @@ def get_relevant_sections(input_text):
     #print lem_input_text
     
     myList = ["congress", "president", "shall"]
-
+    print lem_input_text
     index = 0
     for sentence in legal_text_sentences:
         sentence = sentence.lower()
-        filtered_sentence = remove_stop_words(sentence)
+        #filtered_sentence = remove_stop_words(sentence)
         #print filtered_sentence
-        lem_sentence = lemmatize_words(filtered_sentence)
+        #lem_sentence = lemmatize_words(filtered_sentence)
         #print lem_sentence
 
         counter = 0
-        for word in lem_sentence:
-            if word in lem_input_text:
-                if word in myList:
-                    counter += 1
-                elif len(word) < 4:
-                    counter += 3
-                else:
-                    counter += 10
-        if counter >= 25:
+   
+        for word in lem_input_text:
+            if word in sentence:
+                counter += 1 
+
+        if counter != 0:
             potential_matches[index] = counter
         index += 1
 
-    sorted_matches = sorted(potential_matches.items(), key=lambda x: x[1])
-    
+    sorted_matches = sorted(potential_matches.items(), key=lambda x: x[1], reverse=True)
+    with io.open('sentence_law.sb', 'rU', encoding='utf-8') as myfile:
+       original_text = myfile.read()
+    original_text_sentences = original_text.splitlines()
+
     result = []
-    for key, value in sorted_matches:
-        result.append(legal_text_sentences[key])
+    for key, value in sorted_matches[:3]:
+        result.append(original_text_sentences[key])
         #print legal_text_sentences[num]
         #print('\n')
 
     return result
 
-
+print get_relevant_sections("specialized agency of the United Nations")
