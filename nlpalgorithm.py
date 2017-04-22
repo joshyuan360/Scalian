@@ -76,7 +76,7 @@ potential_matches = {}
 #part of speech tagging - NLP with Python
 def get_relevant_sections(input_text):
     # !!! CHANGE FILE PATH FOR DEPLOYMENT !!!
-    with open('text.sb', 'r') as myfile:
+    with open('/var/www/ScaliaBot/ScaliaBot/text.sb', 'r') as myfile:
         legal_text = myfile.read().replace('\n', ' ').replace(';', '.')
     legal_text_sentences = sent_tokenize(legal_text)
     
