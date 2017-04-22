@@ -72,7 +72,7 @@ def numerical_similarity():
 
     return score
 
-potential_matches = []
+potential_matches = {}
 #part of speech tagging - NLP with Python
 def get_relevant_sections(input_text):
     # !!! CHANGE FILE PATH FOR DEPLOYMENT !!!
@@ -83,16 +83,17 @@ def get_relevant_sections(input_text):
     #temporary
     #legal_text_sentences = ["apples grow on trees.", " oranges exist on Mars"]
     #input_text = "Voters must be able to vote in any primary election"
-
+    input_text = input_text.lower()
     filtered_input_text = remove_stop_words(input_text)
     lem_input_text = lemmatize_words(filtered_input_text)
     #stem_input_text = stemmify_words(filtered_input_text)
     #print lem_input_text
     
-    myList = ["Congress", "President"]
+    myList = ["congress", "president", "shall"]
 
     index = 0
     for sentence in legal_text_sentences:
+        sentence = sentence.lower()
         filtered_sentence = remove_stop_words(sentence)
         #print filtered_sentence
         lem_sentence = lemmatize_words(filtered_sentence)
@@ -108,30 +109,17 @@ def get_relevant_sections(input_text):
                 else:
                     counter += 10
         if counter >= 25:
-            potential_matches.append(index)
+            potential_matches[index] = counter
         index += 1
 
+    sorted_matches = sorted(potential_matches.items(), key=lambda x: x[1])
+    
     result = []
-    for num in potential_matches:
-        result.append(legal_text_sentences[num])
+    for key, value in sorted_matches:
+        result.append(legal_text_sentences[key])
         #print legal_text_sentences[num]
         #print('\n')
 
     return result
-
-answer = get_relevant_sections("powers not delegated to the United States by the Constitution")
-for text in answer:
-    print text
-
-
-
-
-
-
-
-
-
-
-
 
 
