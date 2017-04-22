@@ -12,7 +12,8 @@ from nltk.stem import PorterStemmer, WordNetLemmatizer
 #filtered_input_text = []
 #lemmatized_legal_text = []
 #lemmatized_input_text = []
-
+DEPLOY = '/var/www/ScaliaBot/ScaliaBot/'
+#DEPLOY = ''
 # begin removal of all stop words
 def remove_stop_words(input_string):
     stop_words = set(stopwords.words("english"))
@@ -71,11 +72,11 @@ def numerical_similarity():
     return score
 
 def sentence_file():
-    with io.open('law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'law.sb', 'rU', encoding='utf-8') as myfile:
         file_text = myfile.read()
 
     file_text_sentences = sent_tokenize(file_text)
-    text_file = open("sentence_law.sb", "w")
+    text_file = open(DEPLOY + "sentence_law.sb", "w")
     
     index = 0
     removeLeftSpace = [')', ',', '.', ';', ':']
@@ -98,14 +99,13 @@ def sentence_file():
 
     text_file.close()
 
-sentence_file()
 
 def lem_file():
-    with io.open('law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'law.sb', 'rU', encoding='utf-8') as myfile:
         file_text = myfile.read()
 
     file_text_sentences = sent_tokenize(file_text)
-    text_file = open("lem_law.sb", "w")
+    text_file = open(DEPLOY + "lem_law.sb", "w")
     
     index = 0
     for sentence in file_text_sentences:
@@ -122,7 +122,7 @@ potential_matches = {}
 #part of speech tagging - NLP with Python
 def get_relevant_sections(input_text):
     # !!! CHANGE FILE PATH FOR DEPLOYMENT !!!
-    with io.open('lem_law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'lem_law.sb', 'rU', encoding='utf-8') as myfile:
         legal_text = myfile.read()
     #legal_text = legal_text.replace(';', '.')
     legal_text_sentences = legal_text.splitlines()
@@ -157,7 +157,7 @@ def get_relevant_sections(input_text):
         index += 1
 
     sorted_matches = sorted(potential_matches.items(), key=lambda x: x[1], reverse=True)
-    with io.open('sentence_law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'sentence_law.sb', 'rU', encoding='utf-8') as myfile:
        original_text = myfile.read()
     original_text_sentences = original_text.splitlines()
 
@@ -169,4 +169,3 @@ def get_relevant_sections(input_text):
 
     return result
 
-print get_relevant_sections("specialized agency of the United Nations")

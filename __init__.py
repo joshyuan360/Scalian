@@ -7,6 +7,9 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+DEPLOY = '/var/www/ScaliaBot/ScaliaBot/'
+#DEPLOY = ''
+
 @app.route("/result", methods=['GET', 'POST'])
 def send():
     if request.method == 'POST':
@@ -17,7 +20,7 @@ def send():
         inputString = request.form['user-input']
 
         #local server
-        f = open('text.sb')
+        f = open(DEPLOY + 'text.sb')
         #deployment server: law.joshuayuan.com
         #f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
         
