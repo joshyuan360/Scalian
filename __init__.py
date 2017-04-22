@@ -1,4 +1,6 @@
 from flask import Flask, request, render_template
+from nlpalgorithm import get_relevant_sections
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -9,11 +11,15 @@ def index():
 def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
+        matches = get_relevant_sections(inputString)
+        return render_template('result.html', inputString = inputString, matches = matches)
+    elif request.method == 'POSTkkk':
+        inputString = request.form['user-input']
 
         #local server
-        #f = open('text.sb')
+        f = open('text.sb')
         #deployment server: law.joshuayuan.com
-        f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
+        #f = open('/var/www/ScaliaBot/ScaliaBot/text.sb')
         
         matches = []
         proximity = 0
