@@ -3,6 +3,7 @@ import io
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords, wordnet
 from nltk.stem import PorterStemmer, WordNetLemmatizer
+import similarity
 
 #for testing only
 #legal_text = "the government forces all citizens to plant trees every year"
@@ -13,7 +14,7 @@ from nltk.stem import PorterStemmer, WordNetLemmatizer
 #lemmatized_legal_text = []
 #lemmatized_input_text = []
 DEPLOY = '/var/www/ScaliaBot/ScaliaBot/data/'
-#DEPLOY = 'data/'
+DEPLOY = 'data/'
 # begin removal of all stop words
 def remove_stop_words(input_string):
     stop_words = set(stopwords.words("english"))
@@ -72,11 +73,11 @@ def numerical_similarity():
     return score
 
 def sentence_file():
-    with io.open(DEPLOY + 'law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'mozart.sb', 'rU', encoding='utf-8') as myfile:
         file_text = myfile.read()
 
     file_text_sentences = sent_tokenize(file_text)
-    text_file = open(DEPLOY + "sentence_law.sb", "w")
+    text_file = open(DEPLOY + "sentence_mozart.sb", "w")
     
     index = 0
     removeLeftSpace = [')', ',', '.', ';', ':']
@@ -101,11 +102,11 @@ def sentence_file():
 
 
 def lem_file():
-    with io.open(DEPLOY + 'law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'mozart.sb', 'rU', encoding='utf-8') as myfile:
         file_text = myfile.read()
 
     file_text_sentences = sent_tokenize(file_text)
-    text_file = open(DEPLOY + "lem_law.sb", "w")
+    text_file = open(DEPLOY + "lem_mozart.sb", "w")
     
     index = 0
     for sentence in file_text_sentences:
@@ -117,12 +118,13 @@ def lem_file():
         text_file.write(new_string.encode('utf-8') + '\n')    
         index += 1
     text_file.close()
-
+#sentence_file()
+#lem_file()
 potential_matches = {}
 #part of speech tagging - NLP with Python
 def get_relevant_sections(input_text):
     # !!! CHANGE FILE PATH FOR DEPLOYMENT !!!
-    with io.open(DEPLOY + 'lem_law.sb', 'rU', encoding='utf-8') as myfile:
+    with io.open(DEPLOY + 'lem_mozart.sb', 'rU', encoding='utf-8') as myfile:
         legal_text = myfile.read()
     #legal_text = legal_text.replace(';', '.')
     legal_text_sentences = legal_text.splitlines()
@@ -137,35 +139,48 @@ def get_relevant_sections(input_text):
     #print lem_input_text
     
     myList = ["congress", "president", "shall"]
-    print lem_input_text
     index = 0
     for sentence in legal_text_sentences:
         sentence = sentence.lower()
-        #filtered_sentence = remove_stop_words(sentence)
+        filtered_sentence = remove_stop_words(sentence)
         #print filtered_sentence
-        #lem_sentence = lemmatize_words(filtered_sentence)
-        #print lem_sentence
+        lem_sentence = lemmatize_words(filtered_sentence)
 
         counter = 0
+        for word in sentence.split():
+            if word in lem_input_text:
+                counter += 1
 
-        for word in lem_input_text:
-            if word in sentence:
-                counter += sentence.count(word)
-
+        #print lem_sentence
         if counter != 0:
             potential_matches[index] = counter
+            #sim_index = similarity.symmetric_sentence_similarity(sentence, " ".join(filtered_input_text))
+            #potential_matches[index] = sim_index
+
         index += 1
 
     sorted_matches = sorted(potential_matches.items(), key=lambda x: x[1], reverse=True)
-    with io.open(DEPLOY + 'sentence_law.sb', 'rU', encoding='utf-8') as myfile:
+
+    with io.open(DEPLOY + 'sentence_mozart.sb', 'rU', encoding='utf-8') as myfile:
        original_text = myfile.read()
     original_text_sentences = original_text.splitlines()
 
+    smart_matches = {}
+    for key, value in sorted_matches[:20]:
+        smart_matches[key] = similarity.symmetric_sentence_similarity(original_text_sentences[key], " ".join(filtered_input_text))
+    
+    sorted_matches = sorted(smart_matches.items(), key=lambda x: x[1], reverse=True)
+
     result = []
-    for key, value in sorted_matches[:3]:
-        result.append(original_text_sentences[key])
+    for key, value in sorted_matches[:5]:
+        #focus_sentence = original_text_sentences[key]
+        #sentence = input_text
+        #good = similarity.symmetric_sentence_similarity(focus_sentence, sentence)
+        #print "SymmetricSimilarity(\"%s\", \"%s\") = %s" % (focus_sentence, sentence, similarity.symmetric_sentence_similarity(focus_sentence, sentence))
         #print legal_text_sentences[num]
         #print('\n')
+        result.append(original_text_sentences[key] + " " + str(value))
+        #result.append("%s %s" % (original_text_sentences[key], good))
 
     return result
 
