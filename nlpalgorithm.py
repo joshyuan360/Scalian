@@ -14,7 +14,7 @@ import similarity
 #lemmatized_legal_text = []
 #lemmatized_input_text = []
 DEPLOY = '/var/www/ScaliaBot/ScaliaBot/data/'
-DEPLOY = 'data/'
+#DEPLOY = 'data/'
 # begin removal of all stop words
 def remove_stop_words(input_string):
     stop_words = set(stopwords.words("english"))
