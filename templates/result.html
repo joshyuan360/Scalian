@@ -9,6 +9,7 @@
     <meta name="author" content="Joshua Yuan">
     
     <link rel="stylesheet" href="{{ url_for('static',filename='css/result.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 
 <body>
@@ -22,19 +23,21 @@
 </div>
 <div class="container matches-container">
 	<div class="row matches-row">
-		<h3>About {{ composer }}:</h3>
-
-		<ul class=entries>
-	  	{% for match in matches %}
-	    	<li><p id="quotation">{{ match }}</p>
-            </li>
-	  	{% else %}
-	    	<li><em>No results found!</em></li>
-	  	{% endfor %}
-		</ul>
+        {% if composer != None %}
+		    <h3>About {{ composer }}:</h3>
+            <ul class=entries>
+            {% for match in matches %}
+                <li><p id="quotation">{{ match }}</p></li>
+            {% else %}
+                <li><em>Could not find the information requested about this composer.</em></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <h3>Try again!</h3>
+            <h4>Please include the <em>composer's name</em> in your search query.</h4>
+        {% endif %}
 	</div>
 </div>
-
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
           crossorigin="anonymous">

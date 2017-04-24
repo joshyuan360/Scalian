@@ -9,22 +9,24 @@
     <meta name="author" content="Joshua Yuan">
     
     <link rel="stylesheet" href="{{ url_for('static',filename='css/search.css') }}">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 </head>
 
 <body>
-    <h1 class="text-center" id="title">Scalia Bot</h1>
+    <h1 class="text-center" id="title">Scalian</h1>
 
     <div class="container">
         <div class="text-center" id="engine-label">
-           <div id="subtitle">search engine for classical music history</div>
+           <div id="subtitle">Search engine for classical music history.</div>
         </div>
         <div class="row" id="search-bar">    
             <div class="col-md-12">
                 <form method="POST" action="/result">
                 <div class="form-group">
-                    <input type="text" class="form-control" name="user-input">
+                    <input id="input-box" type="text" class="form-control" name="user-input" placeholder="What would you like to know?">
                 </div>
-                <input class="submit-button" type="submit" value="Enter" placeholder="find an article, search for cases, or ask a question">
+                <input class="submit-button" type="submit" value="Search">
             </form>
             </div>
         </div>
@@ -39,6 +41,5 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
             crossorigin="anonymous"></script> 
-    <script src="js/script.js"></script>
 </body>
 </html>

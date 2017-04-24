@@ -1,12 +1,10 @@
 ul {
-    font-size: 16px;
-    color: rgba(225, 225, 225, 0.8);
+/*    font-size: 16px;
+*/    color: grey;    
 }
 
 .matches-container {
-    background-color: rgba(0, 0, 0, 0.6);
-    border-radius: 50px;
-    color: white;
+    color: grey;
 }
 
 .matches-row {
@@ -18,17 +16,16 @@ ul {
 }
 
 #your-input {
-    font-size: 24px;
+    color: grey;
+    font-size: 18px;
 }
 
 .results-header {
     margin-top: 50px;
-    border-radius: 50px;
-    background-color: rgba(255, 255, 255, 0.5);
-    font-family: Arial;
 }
 
 body {
+    font-family: 'Montserrat', sans-serif !important;
   	background-image: url("../img/dark-abstract.jpg");
   	background-position: 50% 50%;
   	background-repeat: repeat;
