@@ -1,7 +1,7 @@
-import nltk, io, similarity
-from nltk.tokenize import sent_tokenize, word_tokenize
-from nltk.corpus import stopwords, wordnet
-from nltk.stem import PorterStemmer, WordNetLemmatizer
+import nltk, similarity
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 def remove_stop_words(input_string):
     stop_words = set(stopwords.words("english"))
@@ -27,6 +27,18 @@ def lemmatize_words(input_array):
 
 potential_matches = {}
 
+def get_composer(input_text):
+    composers = ['bach', 'beethoven', 'brahms', 'chopin', 
+             'debussy', 'handel', 'haydn', 'liszt',
+             'mahler', 'mozart', 'schubert', 'stravinsky',
+             'tchaikovsky', 'verdi', 'wagner']
+
+    for composer in composers:
+        if composer.lower() in input_text.lower():
+            return composer.lower()
+    
+    return None
+
 def get_relevant_sections(input_text, db):
     cur = db.cursor()
 
@@ -35,11 +47,17 @@ def get_relevant_sections(input_text, db):
     filtered_input_text = remove_stop_words(input_text)
     lem_input_text = lemmatize_words(filtered_input_text)
 
+    #get composer in question
+    composer = get_composer(input_text)
+    if composer == None:
+        return []
+
     #custom stop words
     myList = ["congress", "president", "shall"]
-    table_rows = cur.execute('SELECT ID, sentence, lem_sentence FROM history WHERE name=?', ('Mozart',))
-    table_row_list = cur.fetchall()
 
+    #find all lem_sentences in SQLite that contain at least one word that also exists in the lemmatized input
+    table_rows = cur.execute('SELECT ID, sentence, lem_sentence FROM history WHERE name=?', (composer,))
+    table_row_list = cur.fetchall()
     for row in table_row_list:
         sentence = row[2].lower()
 
@@ -51,19 +69,20 @@ def get_relevant_sections(input_text, db):
         if counter != 0:
             row_id = row[0]
             potential_matches[row_id] = counter
-
     sorted_matches = sorted(potential_matches.items(), key=lambda x: x[1], reverse=True)
 
+    #re-sort the top 20 matches based on their semantic similarity
     smart_matches = {}
     for key, value in sorted_matches[:20]:
-        original_sentence = table_row_list[key][2]
-        smart_matches[key] = similarity.symmetric_sentence_similarity(original_sentence, " ".join(filtered_input_text))
+        original_sentence = cur.execute('SELECT sentence FROM history WHERE ID=?', (key,)).fetchone()[0]
+        smart_matches[original_sentence] = similarity.symmetric_sentence_similarity(original_sentence, " ".join(filtered_input_text))
     
     sorted_matches = sorted(smart_matches.items(), key=lambda x: x[1], reverse=True)
 
+    #return the top 5 "smart matches"
     result = []
     for key, value in sorted_matches[:5]:
-        result.append(table_row_list[key][1] + " " + str(value))
+        result.append(key + " " + str(value))
 
 
     return result

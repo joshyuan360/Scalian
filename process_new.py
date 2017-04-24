@@ -30,7 +30,7 @@ def create_biography(conn, biography):
     cur.execute(sql, biography)
     return cur.lastrowid
 
-def generate_columns(FILE_PATH, conn):
+def generate_columns(FILE_PATH, conn, composer_name):
 	with io.open(FILE_PATH, 'rU', encoding='utf-8') as file:
 		file_text = file.read()
 	file_text_sentences = sent_tokenize(file_text)
@@ -40,14 +40,29 @@ def generate_columns(FILE_PATH, conn):
 		lem_sentence_array = lemmatize_words(filtered_sentence)
 		lem_sentence = ' '.join(lem_sentence_array)
 
-		row = ('Mozart', sentence, lem_sentence);
+		row = (composer_name, sentence, lem_sentence);
 		create_biography(conn, row)
 
-def process_file(BIO_PATH):
+def process_file(BIO_PATH, composer_name):
 	conn = create_connection('sqlite/history.db')
 	with conn:
-		generate_columns(BIO_PATH, conn)
+		generate_columns(BIO_PATH, conn, composer_name)
 
-if __name__ == '__main__':
-	BIO_PATH = 'data/mozart.sb'
-	process_file(BIO_PATH)
+composers = ['bach', 'beethoven', 'brahms', 'chopin', 
+             'debussy', 'handel', 'haydn', 'liszt',
+             'mahler', 'mozart', 'schubert', 'stravinsky',
+             'tchaikovsky', 'verdi', 'wagner']
+for composer in composers:
+    BIO_PATH = 'data/' + composer + '.sb'
+    process_file(BIO_PATH, composer)
+
+
+
+
+
+
+
+
+
+
+

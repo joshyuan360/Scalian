@@ -48,7 +48,7 @@ def sentence_similarity(sentence1, sentence2):
     # For each word in the first sentence
     for synset in synsets1:
         # Get the similarity value of the most similar word in the other sentence
-        path_similarities = [synset.path_similarity(ss) for ss in synsets2]
+        path_similarities = [synset.wup_similarity(ss) for ss in synsets2]
         if path_similarities:
             best_score = max(path_similarities)
         else:
@@ -78,12 +78,12 @@ def symmetric_sentence_similarity(sentence1, sentence2):
     """ compute the symmetric sentence similarity using Wordnet """
     return (sentence_similarity(sentence1, sentence2) + sentence_similarity(sentence2, sentence1)) / 2 
  
-for sentence in sentences:
-    print "SymmetricSimilarity(\"%s\", \"%s\") = %s" % (
-        focus_sentence, sentence, symmetric_sentence_similarity(focus_sentence, sentence))
-    print "SymmetricSimilarity(\"%s\", \"%s\") = %s" % (
-        sentence, focus_sentence, symmetric_sentence_similarity(sentence, focus_sentence))
-    print 
+# for sentence in sentences:
+#     print "SymmetricSimilarity(\"%s\", \"%s\") = %s" % (
+#         focus_sentence, sentence, symmetric_sentence_similarity(focus_sentence, sentence))
+#     print "SymmetricSimilarity(\"%s\", \"%s\") = %s" % (
+#         sentence, focus_sentence, symmetric_sentence_similarity(sentence, focus_sentence))
+#     print 
 # Similarity("Cats are beautiful animals.", "Dogs are awesome.") = 0.511111111111
 # Similarity("Dogs are awesome.", "Cats are beautiful animals.") = 0.666666666667
  

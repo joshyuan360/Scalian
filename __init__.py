@@ -13,7 +13,8 @@ def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
         matches = get_relevant_sections(inputString, db = get_db())
-        return render_template('result.html', inputString = inputString, matches = matches)
+        composer = nlpalgorithm.get_composer(inputString)
+        return render_template('result.html', inputString=inputString, matches=matches, composer=composer)
     else:
         return render_template('index.html')
 
