@@ -1,6 +1,10 @@
+@font-face{
+  font-family: trial;
+  src: url('../Montserrat-Light.ttf');
+}
+
 ul {
-/*    font-size: 16px;
-*/    color: grey;    
+    color: grey;    
 }
 
 .matches-container {
@@ -25,7 +29,7 @@ ul {
 }
 
 body {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: trial, sans-serif !important;
   	background-image: url("../img/dark-abstract.jpg");
   	background-position: 50% 50%;
   	background-repeat: repeat;

@@ -1,3 +1,8 @@
+@font-face{
+  font-family: trial;
+  src: url('../Montserrat-Light.ttf');
+}
+
 .submit-button {
   float: right;
     -webkit-border-radius: 50;
@@ -34,7 +39,7 @@ input {
 }
 
 body {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: trial, sans-serif !important;
   	background-image: url("../img/dark-abstract.jpg");
   	background-position: 50% 50%;
   	background-repeat: repeat;
