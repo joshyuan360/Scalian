@@ -77,7 +77,7 @@ def get_relevant_sections(input_text, db):
                     document_frequency = 0
                 else:
                     document_frequency = document_frequency[0]
-
+                inv_doc_freq = math.log(15.0 / (1 + document_frequency))
                 counter += aug_term_frequency * document_frequency
 
         if counter != 0:
