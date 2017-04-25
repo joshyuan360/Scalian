@@ -55,10 +55,24 @@ def generate_frequencies(conn, composer_name):
                 cur.execute('INSERT INTO frequencies(name, word, frequency) VALUES(?,?,?)',
                             (composer_name, word, 1))
             else:
-                freq = freq_sequence[0] + 1;
+                freq = freq_sequence[0] + 1
                 cur.execute('''UPDATE frequencies 
                             SET frequency=? WHERE name=? AND word=?''', (freq, composer_name, word))
-                        
+
+def generate_doc_frequencies(conn):
+    cur = conn.cursor()
+    all_words_list = cur.execute('SELECT word, frequency FROM frequencies').fetchall()
+    for sequence in all_words_list:
+        word = sequence[0]
+        frequency = sequence[1]
+        doc_freq_seq = cur.execute('SELECT frequency FROM document_frequency WHERE word=?', (word,)).fetchone()
+        if doc_freq_seq == None:
+            cur.execute('INSERT INTO document_frequency(word, frequency) VALUES(?,?)',
+                         (word, 1))
+        else:
+            freq = doc_freq_seq[0] + 1
+            cur.execute('''UPDATE document_frequency
+                           SET frequency=? WHERE word=?''', (freq, word))
 
 def process_file(BIO_PATH, composer_name):
     conn = create_connection('sqlite/history.db')
@@ -70,15 +84,22 @@ def process_frequencies(composer_name):
     with conn:
         generate_frequencies(conn, composer_name)
 
+def process_doc_frequencies():
+    conn = create_connection('sqlite/history.db')
+    with conn:
+        generate_doc_frequencies(conn)
+
 composers = ['bach', 'beethoven', 'brahms', 'chopin', 
              'debussy', 'handel', 'haydn', 'liszt',
              'mahler', 'mozart', 'schubert', 'stravinsky',
              'tchaikovsky', 'verdi', 'wagner']
 
-for composer in composers:
-    BIO_PATH = 'data/' + composer + '.sb'
+#for composer in composers:
+    #BIO_PATH = 'data/' + composer + '.sb'
     #process_file(BIO_PATH, composer)
-    process_frequencies(composer)
+    #process_frequencies(composer)
+    
+process_doc_frequencies()
 
 
 

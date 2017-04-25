@@ -52,9 +52,9 @@ def get_relevant_sections(input_text, db):
     if composer == None:
         return []
 
-    custom_stop_words = ['\'', '\'s', 's', '.', ',', ';']
+    custom_stop_words = ['\'', '\'s', 's', '.', ',', ';', '(', ')', '[', ']']
 
-    #find all lem_sentences in SQLite that contain at least one word that also exists in the lemmatized input
+    #sort by term frequency-inverse document frequency
     table_rows = cur.execute('SELECT ID, sentence, lem_sentence FROM history WHERE name=?', (composer,))
     table_row_list = cur.fetchall()
     for row in table_row_list:
@@ -71,7 +71,14 @@ def get_relevant_sections(input_text, db):
                     term_frequency = term_frequency[0]
                     aug_term_frequency = 1 + math.log(term_frequency)
                 
-                counter += aug_term_frequency
+                document_frequency = cur.execute('''SELECT frequency FROM document_frequency
+                                                    WHERE word=?''', (word,)).fetchone()
+                if document_frequency == None:
+                    document_frequency = 0
+                else:
+                    document_frequency = document_frequency[0]
+
+                counter += aug_term_frequency * document_frequency
 
         if counter != 0:
             row_id = row[0]
