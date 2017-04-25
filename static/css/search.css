@@ -43,6 +43,7 @@ body {
   	background-image: url("../img/dark-abstract.jpg");
   	background-position: 50% 50%;
   	background-repeat: repeat;
+    z-index: -100;
 }
 
 #input-box {
