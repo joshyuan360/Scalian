@@ -1,4 +1,4 @@
-import nltk, similarity
+import nltk, similarity, math
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -52,8 +52,7 @@ def get_relevant_sections(input_text, db):
     if composer == None:
         return []
 
-    #custom stop words
-    myList = ["congress", "president", "shall"]
+    custom_stop_words = ['\'', '\'s', 's', '.', ',', ';']
 
     #find all lem_sentences in SQLite that contain at least one word that also exists in the lemmatized input
     table_rows = cur.execute('SELECT ID, sentence, lem_sentence FROM history WHERE name=?', (composer,))
@@ -62,9 +61,17 @@ def get_relevant_sections(input_text, db):
         sentence = row[2].lower()
 
         counter = 0
-        for word in sentence.split():
+        for word in word_tokenize(sentence):
             if word in lem_input_text:
-                counter += 1
+                term_frequency = cur.execute('''SELECT frequency FROM frequencies
+                                                WHERE name=? AND word=?''', (composer.lower(), word)).fetchone()
+                if term_frequency == None or word in composer or composer in word or word in custom_stop_words:
+                    aug_term_frequency = 0
+                else:
+                    term_frequency = term_frequency[0]
+                    aug_term_frequency = 1 + math.log(term_frequency)
+                
+                counter += aug_term_frequency
 
         if counter != 0:
             row_id = row[0]
