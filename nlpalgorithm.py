@@ -1,4 +1,4 @@
-import nltk, similarity, math
+import nltk, similarity, math, path, io
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -28,14 +28,15 @@ def lemmatize_words(input_array):
 potential_matches = {}
 
 def get_composer(input_text):
-    composers = ['bach', 'beethoven', 'brahms', 'chopin', 
-             'debussy', 'handel', 'haydn', 'liszt',
-             'mahler', 'mozart', 'schubert', 'stravinsky',
-             'tchaikovsky', 'verdi', 'wagner']
+    with io.open(path.PATH + 'data/load.sb', 'rU', encoding='utf-8') as file:
+        file_text = file.read()
+    lines = file_text.split()
 
-    for composer in composers:
-        if composer.lower() in input_text.lower():
-            return composer.lower()
+    for line in lines:
+        composer = line.split('-')
+        for name in composer:
+            if name.lower() in input_text.lower():
+                return line
     
     return None
 

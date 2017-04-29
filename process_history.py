@@ -89,16 +89,14 @@ def process_doc_frequencies():
     with conn:
         generate_doc_frequencies(conn)
 
-composers = ['bach', 'beethoven', 'brahms', 'chopin', 
-             'debussy', 'handel', 'haydn', 'liszt',
-             'mahler', 'mozart', 'schubert', 'stravinsky',
-             'tchaikovsky', 'verdi', 'wagner']
 
-#for composer in composers:
-    #BIO_PATH = 'data/' + composer + '.sb'
-    #process_file(BIO_PATH, composer)
-    #process_frequencies(composer)
-    
+#with io.open('data/load.sb', 'rU', encoding='utf-8') as file:
+#    file_text = file.read()
+#file_names = file_text.split()
+#for name in file_names:
+#    process_file('data/' + name + '.sb', name)
+#    process_frequencies(name)
+   
 process_doc_frequencies()
 
 
