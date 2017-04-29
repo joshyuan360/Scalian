@@ -24,7 +24,7 @@
 <div class="container matches-container">
 	<div class="row matches-row">
         {% if composer != None %}
-		    <h3>About {{ composer }}:</h3>
+		    <h3>Results related to {{ composer }}:</h3>
             <ul class=entries>
             {% for match in matches %}
                 <li><p id="quotation">{{ match }}</p></li>
@@ -32,6 +32,10 @@
                 <li><em>Could not find the information requested about this composer.</em></li>
             {% endfor %}
             </ul>
+            <h3>Original article on {{ composer }}:</h3>
+            {% for paragraph in originalContent %}
+            <p>{{ paragraph }}</p>
+            {% endfor %}
         {% else %}
             <h3>Try again!</h3>
             <h4>Please include the <em>composer's name</em> in your search query.</h4>

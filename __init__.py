@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, g
-from nlpalgorithm import get_relevant_sections
+from nlpalgorithm import get_relevant_sections, get_composer, get_original_content
 import sqlite3, path
 
 app = Flask(__name__)
@@ -13,8 +13,12 @@ def send():
     if request.method == 'POST':
         inputString = request.form['user-input']
         matches = get_relevant_sections(inputString, db = get_db())
-        composer = nlpalgorithm.get_composer(inputString)
-        return render_template('result.html', inputString=inputString, matches=matches, composer=composer)
+        composer = get_composer(inputString)
+        original = get_original_content(composer)
+        composer = composer.split('-')
+        composer = ' '.join(composer).title()
+        
+        return render_template('result.html', inputString=inputString, matches=matches, composer=composer, originalContent=original)
     else:
         return render_template('index.html')
 

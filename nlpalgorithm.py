@@ -24,6 +24,11 @@ def lemmatize_words(input_array):
     
     return temp
 
+def get_original_content(composer_name):
+    with io.open(path.PATH + 'data/' + composer_name + '.sb', 'rU', encoding='utf-8') as file:
+        file_text = file.read().split('\n')
+    return file_text
+    
 
 potential_matches = {}
 
