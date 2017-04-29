@@ -14,11 +14,13 @@ def send():
         inputString = request.form['user-input']
         matches = get_relevant_sections(inputString, db = get_db())
         composer = get_composer(inputString)
-        original = get_original_content(composer, get_db())
-        composer = composer.split('-')
-        composer = ' '.join(composer).title()
-        
-        return render_template('result.html', inputString=inputString, matches=matches, composer=composer, originalContent=original)
+        if composer == None:
+            return render_template('result.html', inputString=inputString, matches=None, composer=None, originalContent=None)
+        else:
+            original = get_original_content(composer, get_db())
+            composer = composer.split('-')
+            composer = ' '.join(composer).title()
+            return render_template('result.html', inputString=inputString, matches=matches, composer=composer, originalContent=original)
     else:
         return render_template('index.html')
 
