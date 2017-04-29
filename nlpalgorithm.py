@@ -24,10 +24,13 @@ def lemmatize_words(input_array):
     
     return temp
 
-def get_original_content(composer_name):
-    with io.open(path.PATH + 'data/' + composer_name + '.sb', 'rU', encoding='utf-8') as file:
-        file_text = file.read().split('\n')
-    return file_text
+def get_original_content(composer_name, db):
+    cur = db.cursor()
+    paragraphs = cur.execute('''SELECT paragraph FROM source WHERE name=?''', (composer_name,)).fetchall()
+    result = []
+    for paragraph in paragraphs:
+        result.append(paragraph[0])
+    return result
     
 
 potential_matches = {}

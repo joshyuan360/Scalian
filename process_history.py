@@ -30,6 +30,14 @@ def create_biography(conn, biography):
     cur.execute(sql, biography)
     return cur.lastrowid
 
+def create_paragraph(conn, name, paragraph):
+    sql = ''' INSERT INTO source(name, paragraph)
+              VALUES(?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, (name,paragraph))
+    return cur.lastrowid
+
+
 def generate_columns(FILE_PATH, conn, composer_name):
 	with io.open(FILE_PATH, 'rU', encoding='utf-8') as file:
 		file_text = file.read()
@@ -42,6 +50,13 @@ def generate_columns(FILE_PATH, conn, composer_name):
 
 		row = (composer_name, sentence, lem_sentence);
 		create_biography(conn, row)
+
+def generate_source(conn, name):
+    with io.open('data/' + name + '.sb', 'rU', encoding='utf-8') as file:
+        file_text = file.read()
+    file_text_paragraphs = file_text.split('\n')
+    for paragraph in file_text_paragraphs:
+        create_paragraph(conn, name, paragraph) 
 
 def generate_frequencies(conn, composer_name):
     cur = conn.cursor()
@@ -89,17 +104,28 @@ def process_doc_frequencies():
     with conn:
         generate_doc_frequencies(conn)
 
+def process_source(name):
+    conn = create_connection('sqlite/history.db')
+    with conn:
+        generate_source(conn, name)
 
+
+### uncomment to load the tables <history> and <frequencies> ###
 #with io.open('data/load.sb', 'rU', encoding='utf-8') as file:
 #    file_text = file.read()
 #file_names = file_text.split()
 #for name in file_names:
 #    process_file('data/' + name + '.sb', name)
 #    process_frequencies(name)
-   
-process_doc_frequencies()
 
+### uncomment to load the table <document_frequency>
+#process_doc_frequencies()
 
+with io.open('data/load.sb', 'rU', encoding='utf-8') as file:
+    file_text = file.read()
+file_names = file_text.split()
+for name in file_names:
+    process_source(name)
 
 
 

@@ -14,7 +14,7 @@ def send():
         inputString = request.form['user-input']
         matches = get_relevant_sections(inputString, db = get_db())
         composer = get_composer(inputString)
-        original = get_original_content(composer)
+        original = get_original_content(composer, get_db())
         composer = composer.split('-')
         composer = ' '.join(composer).title()
         
