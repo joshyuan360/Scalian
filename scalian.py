@@ -142,7 +142,7 @@ def get_relevant_sentences(input_text, db):
     # extract the top 20 sentences in potential_matches 
     # and re-sort based on their semantic similarity
     smart_matches = {}
-    for key, value in sorted_matches:
+    for key, value in sorted_matches[:20]:
         original_sentence = cur.execute(
             '''SELECT sentence FROM history WHERE ID=?''', 
             (key,)
