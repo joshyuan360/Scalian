@@ -1,6 +1,8 @@
+import sqlite3
 from flask import Flask, request, render_template, g
-from nlpalgorithm import get_relevant_sections, get_composer, get_original_content
-import sqlite3, path
+
+from scalian import get_relevant_sentences, get_composer, get_original_article
+import path
 
 app = Flask(__name__)
 
@@ -11,27 +13,39 @@ def index():
 @app.route("/result", methods=['GET', 'POST'])
 def send():
     if request.method == 'POST':
-        inputString = request.form['user-input']
-        matches = get_relevant_sections(inputString, db = get_db())
-        composer = get_composer(inputString)
+        user_query = request.form['user-input']
+        composer = get_composer(user_query)
+
         if composer == None:
-            return render_template('result.html', inputString=inputString, matches=None, composer=None, originalContent=None)
+            return render_template(
+                'result.html', 
+                inputString=user_query,
+                matches=None,
+                composer=None, 
+                originalContent=None
+            )
         else:
-            original = get_original_content(composer, get_db())
+            db = get_db()
+            original = get_original_article(composer, db)
             composer = composer.split('-')
             composer = ' '.join(composer).title()
-            return render_template('result.html', inputString=inputString, matches=matches, composer=composer, originalContent=original)
+
+            return render_template(
+                'result.html', 
+                inputString=user_query, 
+                matches=get_relevant_sentences(user_query, db), 
+                composer=composer, 
+                originalContent=original
+            )
     else:
         return render_template('index.html')
 
-DATABASE = path.PATH + 'sqlite/history.db'
-
 def get_db():
+    db_path = path.PATH + 'sqlite/history.db'
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+        db = g._database = sqlite3.connect(db_path)
     return db
-
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -40,4 +54,4 @@ def close_connection(exception):
         db.close()
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    app.run()
