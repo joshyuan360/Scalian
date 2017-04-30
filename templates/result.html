@@ -13,35 +13,38 @@
 </head>
 
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 text-center results-header">
-            <div id="scalia-bot">Scalian</div>
-            <div id="your-input">Your input: {{ inputString }}</div>
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-12 text-center results-header">
+                <div id="scalia-bot">Scalian</div>
+                <form method="GET" action="/">
+                    <input class="return-button" type="submit" value="Search Again" />
+                </form>
+                <div id="your-input">Your input: {{ inputString }}</div>
+            </div>
         </div>
     </div>
-</div>
-<div class="container matches-container">
-	<div class="row matches-row">
-        {% if composer != None %}
-		    <h3>Results related to {{ composer }}:</h3>
-            <ul class=entries>
-            {% for match in matches %}
-                <li><p id="quotation">{{ match }}</p></li>
+    <div class="container matches-container">
+    	<div class="row matches-row">
+            {% if composer != None %}
+    		    <h3>Results related to {{ composer }}:</h3>
+                <ul class=entries>
+                {% for match in matches %}
+                    <li><p id="quotation">{{ match }}</p></li>
+                {% else %}
+                    <li><em>Could not find the information requested about this composer.</em></li>
+                {% endfor %}
+                </ul>
+                <h3>Original article on {{ composer }}:</h3>
+                {% for paragraph in originalContent %}
+                <p>{{ paragraph }}</p>
+                {% endfor %}
             {% else %}
-                <li><em>Could not find the information requested about this composer.</em></li>
-            {% endfor %}
-            </ul>
-            <h3>Original article on {{ composer }}:</h3>
-            {% for paragraph in originalContent %}
-            <p>{{ paragraph }}</p>
-            {% endfor %}
-        {% else %}
-            <h3>Try again!</h3>
-            <h4>Please include the <em>composer's name</em> in your search query.</h4>
-        {% endif %}
-	</div>
-</div>
+                <h3>Try again!</h3>
+                <h4>Please include the <em>composer's name</em> in your search query.</h4>
+            {% endif %}
+    	</div>
+    </div>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
           crossorigin="anonymous">
