@@ -8,7 +8,6 @@
     <meta name="description" content="constitutional interpretation engine">
     <meta name="author" content="Joshua Yuan">
     
-    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> -->
     <link rel="stylesheet" href="{{ url_for('static',filename='css/result.css') }}">
 </head>
 
@@ -17,24 +16,31 @@
         <div class="row ">
             <div class="col-md-12 text-center results-header">
                 <div id="scalia-bot">Scalian</div>
-                <form method="GET" action="/">
-                    <input class="return-button" type="submit" value="Search Again" />
-                </form>
                 <div id="your-input">Your input: {{ inputString }}</div>
             </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row text-center">
+            <form method="GET" action="/">
+                <input class="return-button" type="submit" value="Search Again" />
+            </form>
         </div>
     </div>
     <div class="container matches-container">
     	<div class="row matches-row">
             {% if composer != None %}
     		    <h3>Results related to {{ composer }}:</h3>
+                {% if matches %}
                 <ul class=entries>
-                {% for match in matches %}
+                    {% for match in matches %}
                     <li><p id="quotation">{{ match }}</p></li>
-                {% else %}
-                    <li><em>Could not find the information requested about this composer.</em></li>
-                {% endfor %}
+                    {% endfor %}
                 </ul>
+                {% else %}
+                    <em>Could not find the information requested about this composer.</em>
+                {% endif %}
+
                 <h3>Original article on {{ composer }}:</h3>
                 {% for paragraph in originalContent %}
                 <p>{{ paragraph }}</p>

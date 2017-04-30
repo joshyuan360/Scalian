@@ -156,6 +156,6 @@ def get_relevant_sentences(input_text, db):
     # return the top 5 sentences in smart_matches
     result = []
     for key, value in sorted_matches[:5]:
-        result.append(key + ' ' + str(value))
+        result.append(key)
 
     return result
