@@ -13,8 +13,9 @@ def index():
 @app.route("/result", methods=['GET', 'POST'])
 def send():
     if request.method == 'POST':
+        db = get_db()
         user_query = request.form['user-input']
-        composer = get_composer(user_query)
+        composer = get_composer(user_query, db)
 
         if composer == None:
             return render_template(
@@ -25,7 +26,6 @@ def send():
                 originalContent=None
             )
         else:
-            db = get_db()
             original = get_original_article(composer, db)
             composer = composer.split('-')
             composer = ' '.join(composer).title()
